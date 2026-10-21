@@ -1,0 +1,212 @@
+:root {
+  --bg: #0d0f1c;
+  --surface: #1a1e36;
+  --surface-hover: #242949;
+  --text: #eceeff;
+  --muted: #8b90b8;
+  --accent: #8f9bff;
+  --alert: #ffb547;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 4vh, 2.5rem);
+  padding: max(1.5rem, env(safe-area-inset-top)) 1rem max(1.5rem, env(safe-area-inset-bottom));
+  transition: background-color 0.3s;
+}
+
+.status {
+  margin: 0;
+  min-height: 2rem;
+  font-size: clamp(1.1rem, 3.5vw, 1.75rem);
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* ---------- Clock ---------- */
+.clock {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: clamp(3.4rem, 17vw, 13rem);
+  line-height: 1;
+}
+
+.clock-part {
+  display: flex;
+  align-items: flex-start;
+}
+
+.unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.digits {
+  width: 1.25em;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0.1em;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+input.digits {
+  cursor: text;
+  caret-color: var(--accent);
+}
+
+input.digits:focus {
+  outline: none;
+  background: var(--surface);
+  box-shadow: 0 0 0 0.03em var(--accent);
+}
+
+.sep {
+  width: 0.35em;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--muted);
+}
+
+.unit-label {
+  margin-top: 0.4rem;
+  font-size: clamp(0.8rem, 2.6vw, 1.15rem);
+  color: var(--muted);
+}
+
+/* ---------- Progress ---------- */
+.progress {
+  width: min(88vw, 40rem);
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  transition: transform 0.15s linear;
+}
+
+/* ---------- Controls ---------- */
+.controls {
+  display: flex;
+  gap: 1rem;
+  width: min(88vw, 28rem);
+}
+
+.btn {
+  flex: 1;
+  min-height: 4rem;
+  border: 0;
+  border-radius: 1rem;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.3rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--surface-hover);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  flex: 2;
+  background: var(--accent);
+  color: #0d0f1c;
+  font-weight: 700;
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: #a9b3ff;
+}
+
+/* ---------- Finished: visual alert ---------- */
+.app.finished {
+  animation: flash 0.9s steps(1, end) infinite;
+}
+
+.app.finished .digits {
+  color: var(--alert);
+}
+
+.app.finished .status {
+  color: var(--alert);
+  font-weight: 700;
+}
+
+.app.finished .progress-fill {
+  background: var(--alert);
+}
+
+@keyframes flash {
+  0%   { background-color: var(--bg); }
+  50%  { background-color: #6b72a5; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app.finished {
+    animation: none;
+    background-color: #3a2a0c;
+  }
+}
+
+/* ---------- Small phones, landscape ---------- */
+@media (max-height: 430px) and (orientation: landscape) {
+  .clock { font-size: clamp(3rem, 22vh, 8rem); }
+  .btn { min-height: 3.25rem; }
+}
